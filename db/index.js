@@ -13,19 +13,14 @@ app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 var Schema = mongoose.Schema;
 
 var cartSchema = new Schema({
   name: String,
   cart: Object,
-  total: Number
-}, { collection: "carts"});
-
+  total: Number,
+  returned: Boolean
+}, { collection: "orders"});
 
 var productSchema = new Schema({
   _id: Schema.ObjectId,
@@ -53,61 +48,61 @@ var productSchema = new Schema({
     price: Number,
     quantity: Number
   }
-}, { collection: "bikeshop" });
+}, { collection: "inventory" });
 
+//Connecting local mongodb
 mongoose.connect('mongodb://localhost/test');
 
 var Cart = mongoose.model('Cart', cartSchema);
 var Inventory = mongoose.model('Inventory', productSchema);
 
-mongoose.model('bikeshop', productSchema);
-mongoose.model('carts', cartSchema);
+var inventoryList = mongoose.model('inventory', productSchema);
+var orderList = mongoose.model('orders', cartSchema);
 
 //Fetching inventory
-app.get('/bikeshop', function(req, res) {
+app.get('/inventory', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-  mongoose.model('bikeshop').find(function(err, products) {
-    res.json(products);
+  inventoryList.find(function(err, inventory) {
+    res.json(inventory);
   });
 });
 
 //Placing order
 app.post('/orders', function(req, res){
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    console.log(req.body);
-    
-    var cart_data = {
-        name: req.body.name,
-        cart: JSON.parse(req.body.cart),
-        total: req.body.total
-    };
-    
-    var cart = new Cart(cart_data);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  console.log(req.body);
+  
+  var cart_data = {
+    name: req.body.name,
+    cart: JSON.parse(req.body.cart),
+    total: req.body.total,
+    returned: false
+  };
+  
+  var cart = new Cart(cart_data);
 
-    //saving cart info into db
+    //Saving cart info into db
     cart.save(function(error, data){
-        if (error) return console.error(error);
+      if (error) return console.error(error);
     });
 
     var id = req.body.id;
     var orders = JSON.parse(req.body.cart);
     console.log(orders);
-    //updating db inventory
-    mongoose.model('bikeshop').findOne({_id: id}, function(err, products){
-      var temp = JSON.parse(JSON.stringify(products));
+    //Updating db inventory
+    inventoryList.findOne({_id: id}, function(err, products){
       var inventory = JSON.parse(JSON.stringify(products));
 
       for(order in orders) {
         console.log(orders[order]);
-        console.log(temp);
-        inventory[order].quantity = temp[order].quantity - orders[order].quantity;
+        inventory[order].quantity -= orders[order].quantity;
       }
       console.log(inventory);
 
-      mongoose.model('bikeshop').remove({_id: id}).exec();;
+      inventoryList.remove({_id: id}).exec();;
 
       var inventory_new = new Inventory(inventory);
       inventory_new.save(function(error, data){
@@ -115,36 +110,38 @@ app.post('/orders', function(req, res){
         res.send('DB Updated!');
       });
     });
-});
+  });
 
 //Fetching all orders
 app.get('/sales', function(req, res){
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-    mongoose.model('carts').find(function(err, sales) {
-      res.json(sales);
-    });
+  orderList.find(function(err, sales) {
+    res.json(sales);
+  });
 });
 
 //Returning order
 app.post('/return', function(req, res){
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    console.log(req.body);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  console.log(req.body);
 
-    //updating db inventory
+    //Updating db inventory
     var returnId = req.body.returnId;
     var inventoryId = req.body.inventoryId;
 
-    mongoose.model('carts').findOne({_id: returnId}, function(err, orders){
+    orderList.findOne({_id: returnId}, function(err, orders){
       console.log(orders);
 
       var returnItems = orders.cart;
+      orders.returned = true;
+      orders.save();
 
       console.log(returnItems);
 
-      mongoose.model('bikeshop').findOne({_id: inventoryId}, function(err, inventory){
+      inventoryList.findOne({_id: inventoryId}, function(err, inventory){
         console.log(inventory);
         for(returnItem in returnItems) {
           console.log(returnItems[returnItem].quantity);
@@ -157,8 +154,7 @@ app.post('/return', function(req, res){
         });
       });
     });
-});
-
+  });
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))

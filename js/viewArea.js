@@ -1,10 +1,10 @@
+//Display inventory and functions on viewArea
 function product_table() {
 
     $('#viewArea').empty();
 
-    var content = '<table>';
+    var content = '<table><tr>';
     var col = 0;
-    content += '<tr>';
     for(var prod in products) {
         if(prod != "_id" && prod != "__v") {
             content += '<td class="product">' +
@@ -15,7 +15,7 @@ function product_table() {
             '<p class="price">$'+products[prod].price+'</p><br>'+prod+':'+products[prod].quantity+'</br>' +
             '</td>';
 
-            // three col per row
+            //Three products per row
             col += 1;
             if (col >= 3) {
                 col = 0;
@@ -23,8 +23,7 @@ function product_table() {
             }
         }
     }
-    content += '</tr>';
-    content += "</table>"
+    content += '</tr></table>';
 
     $('#viewArea').append(content);
 
@@ -33,22 +32,26 @@ function product_table() {
     + "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />";
 }
 
+//Display sales and functions on viewArea
 function sales_table(sales) {
 
     $('#viewArea').empty();
-    
-    var i = 0;
+
     var totalSales = 0;
     var totalOrders = 0;
     var content = '<p>';
 
-    for(var sale in sales) {
-        content += '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total 
-        + '<br><button id='+sales[i]._id+' onClick="returnOrder(\''+ sales[i]._id +'\')">Return Rental ' +  sales[i]._id + '</button>';
+    for(var i = 0; i < sales.length; i++) {
+        content += '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total;
+
+        if(sales[i].returned == true) {
+            content += '<br> Status: Returned';
+        } else {
+            content += '<br> Status: Not Returned<br><button id='+sales[i]._id+' onClick="returnOrder(\''+ sales[i]._id +'\')">Return Rental ' +  sales[i]._id + '</button>';        
+        }
         totalSales += sales[i].total;
-        i++;
         totalOrders++;
-    }
+    };
 
     content += '<br> Total Orders: '+ totalOrders +' Total Sales: $' + totalSales + '</p>';
 

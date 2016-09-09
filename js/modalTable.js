@@ -17,18 +17,18 @@ function generate_table() {
 	cell.appendChild(cellText);
 	row.appendChild(cell);
   var cell = document.createElement("td");
-	var cellText = document.createTextNode("Price ($)");
-	cell.appendChild(cellText);
-	row.appendChild(cell);
-	var cell = document.createElement("td");
-	var cellText = document.createTextNode("");
-	cell.appendChild(cellText);
-	row.appendChild(cell);
-	var cell = document.createElement("td");
-	var cellText = document.createTextNode("");
-	cell.appendChild(cellText);
-	row.appendChild(cell);
-	tblBody.appendChild(row);
+  var cellText = document.createTextNode("Price ($)");
+  cell.appendChild(cellText);
+  row.appendChild(cell);
+  var cell = document.createElement("td");
+  var cellText = document.createTextNode("");
+  cell.appendChild(cellText);
+  row.appendChild(cell);
+  var cell = document.createElement("td");
+  var cellText = document.createTextNode("");
+  cell.appendChild(cellText);
+  row.appendChild(cell);
+  tblBody.appendChild(row);
 
   // creating all cells
   for (var item in cart) {
@@ -43,7 +43,7 @@ function generate_table() {
       var cellText = document.createTextNode(item);
       cell.appendChild(cellText);
       row.appendChild(cell);
-			var cell = document.createElement("td");
+      var cell = document.createElement("td");
       var cellText = document.createTextNode(cart[item]['quantity']);
       cell.appendChild(cellText);
       row.appendChild(cell);
@@ -51,18 +51,18 @@ function generate_table() {
       var cellText = document.createTextNode(products[item].price*cart[item]['quantity']);
       cell.appendChild(cellText);
       row.appendChild(cell);
-			var cell = document.createElement("td");
+      var cell = document.createElement("td");
       var button = document.createElement("input");
-			button.type = "button";
-    	button.value = "+";
-			button.onclick = add_scopepreserver(item);
+      button.type = "button";
+      button.value = "+";
+      button.onclick = add_scopepreserver(item);
       cell.appendChild(button);
       row.appendChild(cell);
-			var cell = document.createElement("td");
+      var cell = document.createElement("td");
       var button = document.createElement("input");
-			button.type = "button";
-    	button.value = "-";
-			button.onclick = remove_scopepreserver(item);
+      button.type = "button";
+      button.value = "-";
+      button.onclick = remove_scopepreserver(item);
       cell.appendChild(button);
       row.appendChild(cell);
     //}
@@ -91,15 +91,15 @@ function generate_table() {
 function add_scopepreserver(product) {
   return function () {
     addToCart(product);
-		document.getElementById("cartModal").innerHTML = "Customer Name: " + name;
-		generate_table();
+    document.getElementById("cartModal").innerHTML = "Customer Name: " + name;
+    generate_table();
   };
 }
 
 function remove_scopepreserver(product) {
   return function () {
     removeFromCart(product);
-		document.getElementById("cartModal").innerHTML = "Customer Name: " + name;
-		generate_table();
+    document.getElementById("cartModal").innerHTML = "Customer Name: " + name;
+    generate_table();
   };
 }
