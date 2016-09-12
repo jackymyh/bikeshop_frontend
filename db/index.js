@@ -50,8 +50,12 @@ var productSchema = new Schema({
   }
 }, { collection: "inventory" });
 
+var mongodbURI = 'mongodb://heroku_rt8s2cqz:deqbkh89884uohtnr9afghm1p7@ds029436.mlab.com:29436/heroku_rt8s2cqz';
+//for local testing
+//var localdb = 'mongodb://localhost/test';
+
 //Connecting local mongodb
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect(mongodbURI);
 
 var Cart = mongoose.model('Cart', cartSchema);
 var Inventory = mongoose.model('Inventory', productSchema);

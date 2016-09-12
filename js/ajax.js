@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		console.log("Sending " + JSON.stringify(order));
 		$.ajax({
 			type: 'POST',
-			url: 'http://localhost:5000/orders',
+			url: 'http://damp-meadow-96985.herokuapp.com/orders',
 			data: order,
 			success: function (data) {
 				console.log("Success to Nodejs...");
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   	// When page first load, fetch inventory
   	$(document).ready(function() {
   		$.ajax({
-  			url: 'http://localhost:5000/inventory',
+  			url: 'http://damp-meadow-96985.herokuapp.com/inventory',
   			dataType: "json",
   			tryCount : 0,
   			retryLimit : 5,
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   	$("#sales").click(function(event) {
   		$.ajax({
   			type: 'GET',
-  			url: 'http://localhost:5000/sales',
+  			url: 'http://damp-meadow-96985.herokuapp.com/sales',
   			dataType: "json",
   			success: function (data) {
   				console.log("Success to Nodejs...");
@@ -95,7 +95,7 @@ function returnOrder(returnId) {
 	};
 	$.ajax({
 		type: 'POST',
-		url: 'http://localhost:5000/return',
+		url: 'http://damp-meadow-96985.herokuapp.com/return',
 		data: return_data,
 		success: function (data) {
 			console.log("Success to Nodejs...");
