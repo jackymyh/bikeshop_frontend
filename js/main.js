@@ -37,6 +37,7 @@ var totalPrice = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
+	showTime();
 	resetOrder();
 	hideRemoveButton();
   	//Escape key to close modal
@@ -102,25 +103,10 @@ function removeFromCart(productName) {
 	timeOut();
 }
 
-function timeOut() {
-	startTimer(0);
-}
-
-// Inactive timer
-function startTimer(duration, display) {
-	var timer = duration, minutes, seconds;
-	inactiveTimer = setInterval(function () {
-		minutes = parseInt(timer / 60, 10);
-		seconds = parseInt(timer % 60, 10);
-
-		minutes = minutes < 10 ? "0" + minutes : minutes;
-		seconds = seconds < 10 ? "0" + seconds : seconds;
-
-		document.getElementById("footer").innerHTML="Inactive " + minutes + ":" + seconds;
-
-		if (++timer < 0) {
-			timer = duration;
-		}
+function showTime(duration) {
+	timer = setInterval(function () {
+		var date = Date();
+		document.getElementById("footer").innerHTML = date;
 	}, 1000);
 }
 
