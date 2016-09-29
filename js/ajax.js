@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	$("#checkout").click(function(event) {
 
 		var order = {
+			date: Date(),
 			id: inventoryId,
 			name: name,
 			cart: JSON.stringify(cart),

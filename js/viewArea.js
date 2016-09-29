@@ -42,7 +42,7 @@ function sales_table(sales) {
     var content = '<p>';
 
     for(var i = 0; i < sales.length; i++) {
-        content += '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total;
+        content += '<br> Date: ' + sales[i].date + '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total;
 
         if(sales[i].returned == true) {
             content += '<br> Status: Returned';

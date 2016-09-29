@@ -30,13 +30,10 @@ var products = {
 };
 
 var inventoryId;
-
-var inactiveTime = 30000;
-
+var discount = 0;
 var totalPrice = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-
 	showTime();
 	resetOrder();
 	hideRemoveButton();
@@ -63,18 +60,14 @@ function addToCart(productName) {
 		document.getElementById(productName+'-remove').style.visibility = 'visible';
 
 		// Update Total Price on Cart
-		totalPrice += products[productName]['price'];
+		totalPrice += products[productName]['price'] * (1-discount);
 		console.log("TotalPrice: " + totalPrice);
-		document.getElementById("showCart").innerHTML= "Show Cart ($" + totalPrice + ")"
-		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />";
+		$('#showCart').html("Show Cart ($" + totalPrice + ")"
+		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
 	}
 	else {
 		alert(productName + " is out of stock.");
 	}
-
-	clearTimeout(inactiveTime);
-	clearTimeout(inactiveTimer);
-	timeOut();
 }
 
 function removeFromCart(productName) {
@@ -89,36 +82,29 @@ function removeFromCart(productName) {
 		}
 
 		// Update Total Price on Cart
-		totalPrice -= products[productName]['price'];
+		totalPrice -= products[productName]['price'] * (1-discount);
 		console.log("TotalPrice: " + totalPrice);
-		document.getElementById("showCart").innerHTML= "Show Cart ($" + totalPrice + ")"
-		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />";
+		$('#showCart').html("Show Cart ($" + totalPrice + ")"
+		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
 	}
 	else {
 		alert("No " + productName + " in cart.");
 	}
-
-	clearTimeout(inactiveTime);
-	clearTimeout(inactiveTimer);
-	timeOut();
 }
 
-function showTime(duration) {
+function showTime() {
 	timer = setInterval(function () {
 		var date = Date();
-		document.getElementById("footer").innerHTML = date;
+		$('#footer').html(date);
 	}, 1000);
 }
 
 function showCart() {
-
 	name = document.getElementById("customer").elements[0].value + ' ' + document.getElementById("customer").elements[1].value;
 
 	// Clear Modal
-	document.getElementById("cartModal").innerHTML = "Customer Name: " + name;
+	$('cartModal').html("Customer Name: " + name);
 	generate_table();
-	console.log("Showing Cart...");
-	console.log(cart);
 }
 
 function cartItem(item, interval){
@@ -149,4 +135,14 @@ function disableReturn(returnId){
 	$('#'+returnId).empty();
 	$('#'+returnId).append('Rental returned');
 	$('#'+returnId).attr("disabled", "disabled");
+}
+
+function setDiscount(percent){
+	discount = percent / 100;
+	totalPrice *= (1 - discount);
+	$('#dLabel').html(percent + "%");
+	$('#cartModal').empty();
+	generate_table();
+	$('#showCart').html("Show Cart ($" + totalPrice + ")"
+	+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
 }

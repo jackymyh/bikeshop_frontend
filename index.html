@@ -102,21 +102,37 @@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Shopping Cart</h4>
-        </div>
-        <div class="modal-body">
-            <div id="cartModal">
-                <!-- See modalTable.js for content in Modal -->
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button id="checkout" type="button" class="btn btn-primary">Checkout</button>
+        	<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        		<h4 class="modal-title" id="myModalLabel">Shopping Cart</h4>
+        	</div>
+        	<div class="modal-body">
+        		<div id="cartModal">
+        			<!-- See modalTable.js for content in Modal -->
+        		</div>
+        	</div>
+        	<div class="modal-footer">
+        		<div class="dropdown pull-left">
+        			<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        				Discount
+        				<span class="caret"></span>
+        			</button>
+        			<ul class="dropdown-menu" aria-labelledby="dLabel">
+        				<li><a href="#" onClick="setDiscount(0)">None</a></li>
+        				<li><a href="#" onClick="setDiscount(5)">5%</a></li>
+        				<li><a href="#" onClick="setDiscount(10)">10%</a></li>
+        				<li><a href="#" onClick="setDiscount(15)">15%</a></li>
+        				<li><a href="#" onClick="setDiscount(20)">20%</a></li>
+        				<li><a href="#" onClick="setDiscount(30)">30%</a></li>
+        				<li><a href="#" onClick="setDiscount(50)">50%</a></li>
+        			</ul>
+        		</div>
+        		<!-- <button id="clear" type="button" class="btn btn-danger">Clear</button> -->
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        		<button id="checkout" type="button" class="btn btn-primary">Checkout</button>
+        	</div>
         </div>
     </div>
-</div>
 </div>
 
 
