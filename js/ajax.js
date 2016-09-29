@@ -30,45 +30,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		});
 	});
 
-
-  	// When page first load, fetch inventory
-  	$(document).ready(function() {
-  		$.ajax({
-  			url: 'http://damp-meadow-96985.herokuapp.com/inventory',
-  			dataType: "json",
-  			tryCount : 0,
-  			retryLimit : 5,
-  			success: function(data) {
-  				console.log("Success to Nodejs...");
-  				console.log(data[0]);
-  				inventoryId = data[0]._id;	  			
-  				products = data[0];
-  				product_table();
-  				hideRemoveButton();
-  			},
-  			error : function(xhr, status, error ) {
-  				console.log(status);
-  				if (status == 'error' || status == 'timeout' ) {
-  					this.tryCount++;
-  					if (this.tryCount <= this.retryLimit) {
-		                //try again
-		                $.ajax(this);
-		                return;
-		            }
-		            return;
-		        }
-		        if (xhr.status == 500) {
-		            //handle error
-		            console.log(xhr.responseText);
-		        } else {
-		            //handle error
-		            console.log(xhr.responseText);
-		        }
-		    },
-		    timeout: 3000
-		});
-  	});
-
   	//Fetch sales from server
   	$("#sales").click(function(event) {
   		$.ajax({
@@ -85,7 +46,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   			}
   		});
   	});
-  });
+ 
+});
 
 //Return rental
 function returnOrder(returnId) {
@@ -109,4 +71,43 @@ function returnOrder(returnId) {
 			console.log(status);
 		}
 	});
-}
+};
+
+
+//Fetch inventory
+function getInventory() {
+	$.ajax({
+		url: 'http://damp-meadow-96985.herokuapp.com/inventory',
+		dataType: "json",
+		tryCount : 0,
+		retryLimit : 5,
+		success: function(data) {
+			console.log("Success to Nodejs...");
+			console.log(data[0]);
+			inventoryId = data[0]._id;	  			
+			products = data[0];
+			product_table();
+			hideRemoveButton();
+		},
+		error : function(xhr, status, error ) {
+			console.log(status);
+			if (status == 'error' || status == 'timeout' ) {
+				this.tryCount++;
+				if (this.tryCount <= this.retryLimit) {
+                //try again
+                $.ajax(this);
+                return;
+            }
+            return;
+        }
+	        if (xhr.status == 500) {
+	            //handle error
+	            console.log(xhr.responseText);
+	        } else {
+	            //handle error
+	            console.log(xhr.responseText);
+	        }
+    	},
+    	timeout: 3000
+	});
+};

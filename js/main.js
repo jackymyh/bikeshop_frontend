@@ -33,7 +33,8 @@ var inventoryId;
 var discount = 0;
 var totalPrice = 0;
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function(event) {	
+	document.forms['customer'].reset();
 	showTime();
 	resetOrder();
 	hideRemoveButton();
@@ -62,8 +63,7 @@ function addToCart(productName) {
 		// Update Total Price on Cart
 		totalPrice += products[productName]['price'] * (1-discount);
 		console.log("TotalPrice: " + totalPrice);
-		$('#showCart').html("Show Cart ($" + totalPrice + ")"
-		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
+		updateCart();
 	}
 	else {
 		alert(productName + " is out of stock.");
@@ -84,8 +84,7 @@ function removeFromCart(productName) {
 		// Update Total Price on Cart
 		totalPrice -= products[productName]['price'] * (1-discount);
 		console.log("TotalPrice: " + totalPrice);
-		$('#showCart').html("Show Cart ($" + totalPrice + ")"
-		+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
+		updateCart();
 	}
 	else {
 		alert("No " + productName + " in cart.");
@@ -101,9 +100,6 @@ function showTime() {
 
 function showCart() {
 	name = document.getElementById("customer").elements[0].value + ' ' + document.getElementById("customer").elements[1].value;
-
-	// Clear Modal
-	$('cartModal').html("Customer Name: " + name);
 	generate_table();
 }
 
@@ -125,9 +121,13 @@ function hideRemoveButton(){
 
 // Clear cart and name
 function resetOrder(){
-	document.forms['customer'].reset();
 	cart = {};
 	totalPrice = 0;
+	discount = 0;
+	generate_table();
+	getInventory();
+	$('#dLabel').html("Discount");
+	updateCart();
 }
 
 //Disable return rental button
@@ -141,8 +141,11 @@ function setDiscount(percent){
 	discount = percent / 100;
 	totalPrice *= (1 - discount);
 	$('#dLabel').html(percent + "%");
-	$('#cartModal').empty();
 	generate_table();
+	updateCart();
+}
+
+function updateCart() {
 	$('#showCart').html("Show Cart ($" + totalPrice + ")"
 	+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
 }

@@ -1,4 +1,7 @@
 function generate_table() {
+
+  $('#cartModal').empty();
+  $('#cartModal').html("Customer Name: " + name);
   // get the reference for the body
   var body = document.getElementById("cartModal");
 
