@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   			success: function (data) {
   				console.log("Success to Nodejs...");
   				console.log(data);
+  				orders = data;
   				sales_table(data);
   			},
   			error: function (xhr, status, error) {

@@ -42,12 +42,13 @@ function sales_table(sales) {
     var content = '<p>';
 
     for(var i = 0; i < sales.length; i++) {
-        content += '<br> Date: ' + sales[i].date + '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total;
+        content += '<br> Date: ' + sales[i].date + '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total +
+        '<br><button id= edit_'+ sales[i]._id +' type="button" class="btn btn-info" onClick="editOrder(\''+ i +'\')">Edit Rental ' +  sales[i]._id + '</button>';
 
         if(sales[i].returned == true) {
             content += '<br> Status: Returned';
         } else {
-            content += '<br> Status: Not Returned<br><button id='+sales[i]._id+' onClick="returnOrder(\''+ sales[i]._id +'\')">Return Rental ' +  sales[i]._id + '</button>';        
+            content += '<br> Status: Not Returned<br><button id='+ sales[i]._id +' type="button" class="btn btn-success" onClick="returnOrder(\''+ sales[i]._id +'\')">Return Rental ' +  sales[i]._id + '</button>';        
         }
         totalSales += sales[i].total;
         totalOrders++;

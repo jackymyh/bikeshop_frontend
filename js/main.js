@@ -29,6 +29,7 @@ var products = {
 	}
 };
 
+var orders;
 var inventoryId;
 var discount = 0;
 var totalPrice = 0;
@@ -121,6 +122,7 @@ function hideRemoveButton(){
 
 // Clear cart and name
 function resetOrder(){
+	$('#customer').trigger("reset");
 	cart = {};
 	totalPrice = 0;
 	discount = 0;
@@ -132,8 +134,7 @@ function resetOrder(){
 
 //Disable return rental button
 function disableReturn(returnId){
-	$('#'+returnId).empty();
-	$('#'+returnId).append('Rental returned');
+	$('#'+returnId).html("Rental returned");
 	$('#'+returnId).attr("disabled", "disabled");
 }
 
@@ -145,7 +146,11 @@ function setDiscount(percent){
 	updateCart();
 }
 
-function updateCart() {
+function updateCart(){
 	$('#showCart').html("Show Cart ($" + totalPrice + ")"
 	+ "<img id=\"cartImage\" src=\"images/cart.png\" alt=\"description here\" />");
+}
+
+function editOrder(editId){
+	console.log(orders[editId]);
 }
