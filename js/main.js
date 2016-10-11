@@ -153,4 +153,5 @@ function updateCart(){
 
 function editOrder(editId){
 	console.log(orders[editId]);
+	editTable(orders[editId]);
 }

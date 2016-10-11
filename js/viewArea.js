@@ -43,7 +43,7 @@ function sales_table(sales) {
 
     for(var i = 0; i < sales.length; i++) {
         content += '<br> Date: ' + sales[i].date + '<br> Name: ' + sales[i].name + '<br> Orders: ' + JSON.stringify(sales[i].cart) + '<br> Price: $' + sales[i].total +
-        '<br><button id= edit_'+ sales[i]._id +' type="button" class="btn btn-info" onClick="editOrder(\''+ i +'\')">Edit Rental ' +  sales[i]._id + '</button>';
+        '<br><button id= edit_'+ sales[i]._id +' type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2" onClick="editOrder(\''+ i +'\')">Edit Rental ' +  sales[i]._id + '</button>';
 
         if(sales[i].returned == true) {
             content += '<br> Status: Returned';
